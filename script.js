@@ -49,6 +49,7 @@ async function getAllRecords() {
     }
     getAllRecords();
 
+//FIGURE OUT WHAT IS GOING ON PAST THIS POINT
 // Detail View
     async function getOneRecord(id) {
         let artResultElement = document.getElementById("content");
@@ -64,3 +65,28 @@ async function getAllRecords() {
     await fetch(
         `https://api.airtable.com/v0/appLBS1JnBSsMg3km/Table%201/${id}`
     )
+      .then((response)  => response.json())
+      .then((data) => {
+        console.log(data); //response is a single object
+
+        let image = data.fields["Images"];
+        let name = data.fields["Name"];
+        let price = data.fields["Price"];
+        let availability = data.fields["Availability"];
+        let medium = data.fields["Medium"];
+        let size = data.fields["Size"];
+        let description = data.fields["Description"];
+
+        let newHtml = `
+
+            <div class="card list mb-3">
+    <div class="row g-0">
+        <div class="col-md-4 d-flex justify-content-center align-items-center">
+          ${
+            logo //work on logo
+              ? `<img class="img-fluid back ms-4" alt="${name}" src="${logo[0].url}">`
+              : ``
+          }
+      }
+      </div>
+    </div>
