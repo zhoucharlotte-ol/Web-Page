@@ -113,7 +113,7 @@ async function getOneRecord(id) {
   </div>
   <div class="card list hours">
     <div class="card-body">
-      <h4 class="card-title">😁 🕔 Happy Hours</h4>
+      <h4 class="card-title"></h4>
       <p class="card-text">${medium}</p>
      
     </div>
