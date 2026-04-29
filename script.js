@@ -106,7 +106,7 @@ async function getOneRecord(id) {
        <div class="card-group hours mx-auto">    
   <div class="card list hours shift">
     <div class="card-body">
-      <h4 class="card-title">🕔 Hours</h4>
+      <h4 class="card-title"></h4>
       <p class="card-text">${size}</p>
       
     </div>
