@@ -16,6 +16,7 @@ async function getAllRecords() {
 
         .then((response) => response.json())
         .then((data) => {
+          window.contentData = data.records;
             console.log(data);
 
             getResultElement.innerHTML = "";
@@ -28,21 +29,22 @@ async function getAllRecords() {
                 // possibly add painting type (ie: portrait, landscape, political, etc.)
 
                 // for the cards in list view - will change style
-                newHtml += `
-                
-                <div class="col-xl-4 cardImageText">
-                  <div class="card list move border-dark mb-5" style="width: 20rem;">
-                  <a href="index.html?id=${data.records[i].id}">${
-                    images
-                    // ? if true and : if false
-                      ? `<img class="card-img-top rounded" alt=${name}" src="${images[0].url}">`
-                      : ``
-                  }
-                  </a>
+                newHtml +=`
+                  <div class="col-md-4 d-flex justify-content-center my-4">
+                    <div class="card h-100 w-100")">
+                      <a href="index.html?id=${data.records[i].id}">
+                          ${
+                          images
+                          ? `<img class="card-img-top" alt="${name}" src="${images[0].url}" style="height: 200px; object-fit: cover;">`
+                          : ``
+                          }
+                        </a>
+                        <div class="card-body text-center">
+                        <h6 class="card-title mb-0">${name}</h6>
+                        </div>
+                    </div>
                   </div>
-                </div>
-
-                `;
+                  `;
             }
             getResultElement.innerHTML = newHtml;
         });
@@ -55,6 +57,9 @@ async function getAllRecords() {
 
 async function getOneRecord(id) {
   let jobsResultElement = document.getElementById("content");
+
+  const hero = document.querySelector('.hero');
+    if (hero) hero.style.display = 'none';
 
   const options = {
     method: "GET",
@@ -78,65 +83,125 @@ async function getOneRecord(id) {
       let medium = data.fields["Medium"];
       let size = data.fields["Size"];
       let description = data.fields["Description"];
+
+      let dollar = "$";
     
       let newHtml = `
-        <div class="card list mb-3">
-  <div class="row g-0">
-    <div class="col-md-4 d-flex justify-content-center align-items-center">
+        <div class="mb-3">
+  <div class="color blurb">
+    <div class="col-12 d-flex justify-content-center align-items-center">
      ${
        images
          ? `<img class="img-fluid back ms-4" alt="${name}" src="${images[0].url}">`
          : ``
      }
     </div>
-    <div class="col-md-6 d-flex justify-content-center align-items-center desc">
-      <div class="card-body">
-        <h5 class="card-title bar">${name}</h5>
-        <p class="card-text">${price}</p>
-        <p class="card-text">${availability}></p>
+    <div class="col-12 d-flex text-center justify-content-center mt-3">
+      <div>
+        <h2><strong><em>${name}</strong></em></h2>
+        <h5>${description}</h5>
+        <h6><strong>${availability}</strong></h6>
+        <p>${dollar}${price}</p>
+        <p>${size}</p>
+        <p>${medium}</p>
       </div>
     </div>
   </div>
-</div>
-
-<div class="card list mb-3">
-  <div class="row g-0">
-       <div class="col-md-6 d-flex justify-content-center align-items-center">
-       <div class="card-body">
-       <div class="card-group hours mx-auto">    
-  <div class="card list hours shift">
-    <div class="card-body">
-      <h4 class="card-title"></h4>
-      <p class="card-text">${size}</p>
-      
-    </div>
-  </div>
-  <div class="card list hours">
-    <div class="card-body">
-      <h4 class="card-title"></h4>
-      <p class="card-text">${medium}</p>
-     
-    </div>
-  </div>
-</div>
-<div class="moves">
-<table class="table misc">
-    <tbody>
-    <tr>
-      <th scope="row misc">Neighborhood</th>
-      <td class="card-text">${description}</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
 </div>
       `;
 
       jobsResultElement.innerHTML = newHtml;
     });
+}
+
+
+/* pop up for about me */
+async function getAbout() {
+    const modalElement = document.getElementById('recordModal');
+    const modalBody = document.getElementById("modal-content-area");
+
+    // 1. Get the existing instance or create a new one
+    let bsModal = bootstrap.Modal.getInstance(modalElement);
+    if (!bsModal) {
+        bsModal = new bootstrap.Modal(modalElement);
+    }
+
+    modalBody.innerHTML = `
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading..</span>
+            </div>
+        </div>`;
+    
+    bsModal.show();
+
+    const newHtml = `
+        <h1 class="yatra text-center">About the Artist</h1>
+        <div class="text-center my-4 mb-4">
+        <img src="antonio.jpg" alt="Photo of Antonio Preza" class="img-fluid rounded-circle border shadow">
+        </div>
+        <h4 class="yatra text-center">Antonio Balmore Preza</h4>
+        <p class="blurb text-center">I was born and raised in San Francisco, the Mission district being amongst the many neighborhoods I have lived in. My interest in art started as a young child with sketches. My passion for painting began around 2010. Acrylic paints are my preferred medium. I am inspired by music, life and memories.</p>
+    `;
+
+    setTimeout(() => {
+        modalBody.innerHTML = newHtml;
+    }, 500); 
+}
+
+
+// figure out what this is all about !!
+
+function filter() {
+    let selectedName = document.getElementById("nameFilter").value;
+    let getResultElement = document.getElementById("content");
+    
+    getResultElement.innerHTML = "";
+    let filteredHtml = "";
+    let previousName = ""; 
+
+    window.contentData.forEach((record) => {
+        let fields = record.fields;
+        let name = fields["Name"] || "";
+
+        if (selectedName === "All" || name === selectedName) {
+            
+            if (name !== previousName) {
+                filteredHtml += `<div class="col-12 mt-4"><h1 class="text-center mb-3 fw-bold">${name}</h1></div>`;
+                previousName = name;
+            }
+
+            let images = fields["Images"];
+            let name = fields["Name"];
+
+
+            filteredHtml +=`
+                  <div class="col-md-4 d-flex justify-content-center my-4">
+                    <div class="card h-100 w-100")">
+                      <a href="index.html?id=${record.id}">
+                          ${
+                          images
+                          ? `<img class="card-img-top" alt="${name}" src="${images[0].url}" style="height: 200px; object-fit: cover;">`
+                          : ``
+                          }
+                        </a>
+                        <div class="card-body text-center">
+                        <h6 class="card-title mb-0";">${name}</h6>
+                        </div>
+                    </div>
+                  </div>
+                  `;
+        }
+    });
+
+    getResultElement.innerHTML = filteredHtml;
+}
+
+function showHome() {
+    const hero = document.querySelector('.hero');
+    if (hero) hero.style.display = 'block';
+    
+    document.getElementById("content").innerHTML = ""; 
 }
 
 let idParams = window.location.search.split("?id=");
@@ -145,3 +210,5 @@ if (idParams.length >= 2) {
 } else {
   getAllRecords(); // no id given, fetch summaries
 }
+// Remove onclick="getAbout()" from the HTML first!
+document.querySelector('.rounded-circle').addEventListener('click', getAbout);
