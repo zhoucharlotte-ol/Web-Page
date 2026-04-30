@@ -40,7 +40,7 @@ async function getAllRecords() {
                           }
                         </a>
                         <div class="card-body text-center">
-                        <h6 class="card-title mb-0">${name}</h6>
+                        <h6 class="card-title mb-0" style="font-family: 'Times New Roman', Times, serif;">${name}</h6>
                         </div>
                     </div>
                   </div>
@@ -98,12 +98,12 @@ async function getOneRecord(id) {
     </div>
     <div class="col-12 d-flex text-center justify-content-center mt-3">
       <div>
-        <h2><strong><em>${name}</strong></em></h2>
-        <h5>${description}</h5>
-        <h6><strong>${availability}</strong></h6>
-        <p>${dollar}${price}</p>
-        <p>${size}</p>
-        <p>${medium}</p>
+        <h1><strong><em>${name}</strong></em></h1>
+        <h4><strong>Description: </strong>${description}</h4>
+        <h5><strong>${availability}</strong></h5>
+        <h5><strong>${dollar}${price}</strong></h5>
+        <h5><strong>Size: </strong>${size}</h5>
+        <h5><strong>Medium: </strong>${medium}</h5>
       </div>
     </div>
   </div>
@@ -151,7 +151,7 @@ async function getAbout() {
 
 
 // figure out what this is all about !!
-
+/*
 function filter() {
     let selectedName = document.getElementById("nameFilter").value;
     let getResultElement = document.getElementById("content");
@@ -167,7 +167,7 @@ function filter() {
         if (selectedName === "All" || name === selectedName) {
             
             if (name !== previousName) {
-                filteredHtml += `<div class="col-12 mt-4"><h1 class="text-center mb-3 fw-bold">${name}</h1></div>`;
+                filteredHtml += `<div class="col-12 mt-4"><h1 class="text-center mb-3 fw-bold">${}</h1></div>`;
                 previousName = name;
             }
 
@@ -196,6 +196,7 @@ function filter() {
 
     getResultElement.innerHTML = filteredHtml;
 }
+    */
 
 function showHome() {
     const hero = document.querySelector('.hero');
