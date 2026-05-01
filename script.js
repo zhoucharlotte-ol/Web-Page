@@ -31,7 +31,7 @@ async function getAllRecords() {
                 // for the cards in list view - will change style
                 newHtml +=`
                   <div class="col-md-4 d-flex justify-content-center my-4">
-                    <div class="card h-100 w-100")">
+                    <div class="card h-100 w-100">
                       <a href="index.html?id=${data.records[i].id}">
                           ${
                           images
